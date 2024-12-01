@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 
 interface BoxErrorProps {
