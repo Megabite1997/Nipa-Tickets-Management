@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy } from "react";
 import {
-  DataGrid,
   GridColDef,
   GridSortModel,
   GridPaginationModel,
@@ -15,7 +14,13 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { getTickets, updateTicket } from "../services/ticketsApi";
-import EditDialog from "./EditDialog";
+
+const DataGrid = lazy(() =>
+  import("@mui/x-data-grid").then((module) => ({
+    default: module.DataGrid, // Explicitly select the DataGrid component
+  })),
+);
+const EditDialog = lazy(() => import("./EditDialog"));
 
 const DataTable: React.FC = () => {
   const [data, setData] = useState([]);
@@ -39,8 +44,6 @@ const DataTable: React.FC = () => {
       const response = await getTickets({
         params: query,
       });
-
-      console.log("response :", response);
 
       setData(response.data);
       setTotalRows(response.meta.total);

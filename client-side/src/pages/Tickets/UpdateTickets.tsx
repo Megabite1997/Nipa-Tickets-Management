@@ -1,5 +1,6 @@
-import { FC } from "react";
-import DataTable from "../../components/DataTable";
+import { FC, lazy } from "react";
+
+const DataTable = lazy(() => import("../../components/DataTable"));
 
 const UpdateTickets: FC = () => {
   return (

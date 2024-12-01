@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -43,8 +43,7 @@ const CreateTicket: FC = () => {
         contact_information: data.contact_information.trim(),
       };
 
-      const responseData = await createTicket(trimmedData);
-      console.log("responseData: ", responseData);
+      await createTicket(trimmedData);
       setIsSuccess(true);
       reset();
     } catch (error) {
@@ -57,10 +56,6 @@ const CreateTicket: FC = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log("isSuccess:", isSuccess);
-  }, [isSuccess]);
 
   const handleSubmitForm = handleSubmit(createTicketHandler, (error) => {
     console.error("Validation error: ", error);
