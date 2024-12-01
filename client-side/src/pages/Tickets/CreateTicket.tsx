@@ -1,10 +1,9 @@
-import { FC, useState } from "react";
+import { FC, lazy, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import { Player } from "@lottiefiles/react-lottie-player";
 
 import InputField from "../../components/InputField";
 import { createTicketSchema } from "../../schemas/createTicketSchema";
@@ -13,6 +12,12 @@ import BoxError from "../../components/BoxError";
 import Button from "../../components/Button";
 import TextArea from "../../components/TextArea";
 import successAnimation from "../../assets/nipa/successAnimation.json";
+
+const Player = lazy(() =>
+  import("@lottiefiles/react-lottie-player").then((module) => ({
+    default: module.Player,
+  })),
+);
 
 const CreateTicket: FC = () => {
   const {
