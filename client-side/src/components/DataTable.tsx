@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -11,20 +11,26 @@ import {
   MenuItem,
   SelectChangeEvent,
   Box,
+  IconButton,
 } from "@mui/material";
-import { getTickets } from "../services/ticketsApi";
+import EditIcon from "@mui/icons-material/Edit";
+import { getTickets, updateTicket } from "../services/ticketsApi";
+import EditDialog from "./EditDialog";
 
 const DataTable: React.FC = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState({
     search: "",
-    // status: "pending",
-    sort: "name",
+    status: "",
+    sortBy: "title",
     order: "asc",
     page: 1,
     limit: 10,
   });
+  const [totalRows, setTotalRows] = useState(0);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -36,7 +42,8 @@ const DataTable: React.FC = () => {
 
       console.log("response :", response);
 
-      setData(response); // Adjust based on your API response structure
+      setData(response.data);
+      setTotalRows(response.meta.total);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -49,26 +56,50 @@ const DataTable: React.FC = () => {
   }, [query]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery({ ...query, search: event.target.value, page: 1 });
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current); // Clear the previous timeout
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setQuery((prevQuery) => ({
+        ...prevQuery,
+        search: event.target.value,
+        page: 1,
+      }));
+    }, 500);
   };
 
   const handleSortChange = (sortModel: GridSortModel) => {
     if (sortModel.length > 0) {
       const { field, sort } = sortModel[0];
-      setQuery({ ...query, sort: field, order: sort || "asc" });
+      setQuery({ ...query, sortBy: field, order: sort || "asc" });
     }
   };
 
   const handlePaginationChange = (paginationModel: GridPaginationModel) => {
     setQuery({
       ...query,
-      page: paginationModel.page + 1, // API uses 1-based index
+      page: paginationModel.page + 1,
       limit: paginationModel.pageSize,
     });
   };
 
   const handleLimitChange = (event: SelectChangeEvent<number>) => {
     setQuery({ ...query, limit: Number(event.target.value), page: 1 });
+  };
+
+  const handleStatusChange = (event: SelectChangeEvent<string>) => {
+    setQuery({ ...query, status: event.target.value, page: 1 });
+  };
+
+  const handleEditClick = (row: any) => {
+    setSelectedRow(row); // Store the row data in state
+  };
+
+  const handleSave = async (updatedRow: any) => {
+    await updateTicket(updatedRow.id, updatedRow); // Update the backend
+    fetchData(); // Refresh the table
+    setSelectedRow(null); // Close the dialog
   };
 
   const columns: GridColDef[] = [
@@ -106,6 +137,21 @@ const DataTable: React.FC = () => {
         );
       },
     },
+    {
+      field: "edit",
+      headerName: "Edit",
+      width: 100,
+      sortable: false,
+      renderCell: (params) => (
+        <IconButton
+          onClick={() => handleEditClick(params.row)}
+          color="primary"
+          // aria-label="edit"
+        >
+          <EditIcon />
+        </IconButton>
+      ),
+    },
   ];
 
   return (
@@ -117,15 +163,37 @@ const DataTable: React.FC = () => {
         style={{ marginBottom: 16 }}
         fullWidth
       />
-      <Select
-        value={query.limit}
-        onChange={handleLimitChange}
-        style={{ marginBottom: 16, width: 120 }}
-      >
-        <MenuItem value={5}>5</MenuItem>
-        <MenuItem value={10}>10</MenuItem>
-        <MenuItem value={20}>20</MenuItem>
-      </Select>
+
+      <div className="flex gap-10">
+        <div>
+          <label className="mr-2">Limit Row</label>
+          <Select
+            value={query.limit}
+            onChange={handleLimitChange}
+            style={{ marginBottom: 16, width: 120 }}
+          >
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+          </Select>
+        </div>
+
+        <div>
+          <label className="mr-2">Status</label>
+          <Select
+            value={query.status}
+            onChange={handleStatusChange}
+            style={{ marginBottom: 16, width: 150 }}
+            displayEmpty
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="active">Active</MenuItem>
+            <MenuItem value="inactive">Inactive</MenuItem>
+            <MenuItem value="pending">Pending</MenuItem>
+          </Select>
+        </div>
+      </div>
+
       <DataGrid
         rows={data}
         columns={columns}
@@ -137,13 +205,22 @@ const DataTable: React.FC = () => {
             },
           },
         }}
-        pageSizeOptions={[5]}
-        // pagination
-        // paginationMode="server"
-        // paginationModel={{ page: query.page - 1, pageSize: query.limit }}
+        pagination
+        paginationMode="server"
+        rowCount={totalRows} // Set total rows from meta
+        pageSizeOptions={[5, 10, 20]}
+        paginationModel={{ page: query.page - 1, pageSize: query.limit }}
         onPaginationModelChange={handlePaginationChange}
         onSortModelChange={handleSortChange}
       />
+
+      {selectedRow && (
+        <EditDialog
+          selectedRow={selectedRow}
+          onClose={() => setSelectedRow(null)}
+          onSave={handleSave}
+        />
+      )}
     </Box>
   );
 };

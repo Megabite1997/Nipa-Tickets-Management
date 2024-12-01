@@ -28,3 +28,19 @@ export const getTickets = async (params: Record<string, any> = {}) => {
     throw error;
   }
 };
+
+export const updateTicket = async (
+  id: string,
+  updatedData: Record<string, any>,
+) => {
+  try {
+    const response = await axiosInstance.put(`api/tickets/${id}`, updatedData);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Update failed:", error.message);
+      throw new Error("Error updating ticket. Please try again.");
+    }
+    throw error;
+  }
+};

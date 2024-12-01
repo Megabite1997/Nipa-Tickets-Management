@@ -1,21 +1,17 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 
-import { VscAccount } from "react-icons/vsc";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useAuth } from "../store/auth-context";
 
 import LogoNipa from "../assets/nipa/nipa_logo.jpeg";
 
 const Navbar: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-
   return (
     <header className="fixed w-full flex bg-white items-center justify-end p-2 px-5 sm:px-10 shadow-lg z-50">
       <Link className="mr-auto flex items-center" to="/">
         <img className="w-12 md:w-16" src={LogoNipa} alt="Logo Nipa" />
-        <a href="">NIPA Tickets</a>
+        <p>NIPA Tickets</p>
       </Link>
 
       <div className="md:hidden">
@@ -30,13 +26,6 @@ const Navbar: React.FC = () => {
           <NavLink className="p-2" to="contact_us">
             Contact Us
           </NavLink>
-          {isAuthenticated ? (
-            <NavLink className="p-2" to="login">
-              Loigin / Register
-            </NavLink>
-          ) : (
-            <NavLink to="/user-account"></NavLink>
-          )}
         </div>
       </div>
 
@@ -85,18 +74,6 @@ const Navbar: React.FC = () => {
               }
             >
               Contact Us
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="login"
-              className={({ isActive }) =>
-                isActive
-                  ? "flex items-center gap-2 text-pink-600 "
-                  : "flex items-center gap-2 hover:text-pink-600"
-              }
-            >
-              Login / Register <VscAccount />
             </NavLink>
           </li>
         </ul>

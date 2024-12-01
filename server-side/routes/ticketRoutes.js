@@ -7,8 +7,8 @@ const {
 
 const router = express.Router();
 
-router.post("/", createTicket); // Create a ticket
-router.put("/:id", updateTicket); // Update a ticket
-router.get("/", listTickets); // List and filter tickets
+router.post("/", createTicket);
+router.put("/:id", updateTicket);
+router.get("/", listTickets);
 
 module.exports = router;

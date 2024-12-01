@@ -1,12 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import ImageContactUs from "../assets/contact-us.jpeg";
 
-interface ContactUsProps {}
-
-const ContactUs: FC<ContactUsProps> = ({}) => {
+const ContactUs: FC = () => {
   return (
-    <div className="pt-20 md:pt-40 bg-shiba-yellow h-screen">
+    <div className="pt-20 md:pt-40 bg-pink-500 h-screen">
       <div className="grid md:grid-flow-col gap-10 bg-white p-10 md:mx-20 lg:mx-40 mt-10 shadow-xl justify-between animate-fade-in">
         <div>
           <h1 className="text-3xl font-semibold">Contact Us</h1>

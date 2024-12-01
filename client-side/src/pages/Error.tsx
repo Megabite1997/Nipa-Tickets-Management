@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import ImageShibaDoubt from "../assets/shiba/shiba-doubt.jpeg";
+import ImageShibaDoubt from "../assets/shiba-doubt.jpeg";
 
 const ErrorPage: React.FC = () => {
   return (

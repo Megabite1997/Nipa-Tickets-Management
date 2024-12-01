@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -36,7 +36,14 @@ const CreateTicket: FC = () => {
   }) => {
     try {
       setIsLoading(true);
-      const responseData = await createTicket(data);
+
+      const trimmedData = {
+        title: data.title.trim(),
+        description: data.description.trim(),
+        contact_information: data.contact_information.trim(),
+      };
+
+      const responseData = await createTicket(trimmedData);
       console.log("responseData: ", responseData);
       setIsSuccess(true);
       reset();
@@ -50,6 +57,10 @@ const CreateTicket: FC = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("isSuccess:", isSuccess);
+  }, [isSuccess]);
 
   const handleSubmitForm = handleSubmit(createTicketHandler, (error) => {
     console.error("Validation error: ", error);
@@ -75,9 +86,9 @@ const CreateTicket: FC = () => {
               loop={false}
               src={successAnimation}
               style={{ height: "200px", width: "200px" }}
-              // onEvent={(event) => {
-              //   if (event === "complete") setSuccess(false); // Hide after animation
-              // }}
+              onEvent={(event) => {
+                if (event === "complete") setIsSuccess(false); // Hide after animation
+              }}
             />
           </div>
         )}

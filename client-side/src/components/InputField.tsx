@@ -5,9 +5,9 @@ interface InputFieldProps {
   label: string;
   name: string;
   type: string;
-  register: UseFormRegister<any>; // Register from react-hook-form
+  register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
-  error?: FieldError; // Error handling
+  error?: FieldError;
   placeholder?: string;
   maxLength?: number;
   className?: string;
@@ -19,6 +19,7 @@ const InputField: FC<InputFieldProps> = ({
   name,
   type,
   register,
+  setValue,
   error,
   placeholder = "Enter text",
   maxLength = 50,
@@ -40,7 +41,7 @@ const InputField: FC<InputFieldProps> = ({
         {...register(name)}
         onBlur={(e) => {
           const trimmedValue = e.target.value.trim();
-          setValue(name, trimmedValue); // Update the value with trimmed input
+          setValue(name, trimmedValue);
         }}
       />
       {error && (

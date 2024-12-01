@@ -1,6 +1,5 @@
 import React from "react";
 import TicketNipa from "../assets/nipa/nipa_ticket.webp";
-import List from "../components/List";
 import Button from "../components/Button";
 import { NavLink } from "react-router-dom";
 
@@ -19,10 +18,6 @@ const HomePage: React.FC = () => {
             <Button text="Create a ticket" className="py-4 font-bold"></Button>
           </NavLink>
         </div>
-      </section>
-
-      <section className="relative">
-        <List />
       </section>
     </div>
   );
