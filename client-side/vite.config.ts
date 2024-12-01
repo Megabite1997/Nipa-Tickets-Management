@@ -7,4 +7,7 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  build: {
+    chunkSizeWarningLimit: 1000, // Increase the limit to 1 MB
+  },
 });
