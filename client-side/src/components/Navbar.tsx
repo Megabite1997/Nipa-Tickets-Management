@@ -16,20 +16,20 @@ const Navbar: React.FC = () => {
 
       <div className="md:hidden">
         <GiHamburgerMenu className="peer" />
-        <div className="absolute bg-pink-600 hover:bg-pink-800 text-white hidden peer-hover:flex hover:flex flex-col w-28 shadow-xl right-4">
-          <NavLink className="p-2" to="tickets">
+        <div className="absolute bg-pink-600 text-white hidden peer-hover:flex hover:flex flex-col w-28 shadow-xl right-4">
+          <NavLink className="p-2 hover:bg-pink-800" to="tickets">
             Tickets
           </NavLink>
-          <NavLink className="p-2" to="create_tickets">
+          <NavLink className="p-2 hover:bg-pink-800" to="create_tickets">
             Create Tickets
           </NavLink>
-          <NavLink className="p-2" to="update_tickets">
+          <NavLink className="p-2 hover:bg-pink-800" to="update_tickets">
             Update Tickets
           </NavLink>
-          <NavLink className="p-2" to="about_us">
+          <NavLink className="p-2 hover:bg-pink-800" to="about_us">
             About Us
           </NavLink>
-          <NavLink className="p-2" to="contact_us">
+          <NavLink className="p-2 hover:bg-pink-800" to="contact_us">
             Contact Us
           </NavLink>
         </div>
