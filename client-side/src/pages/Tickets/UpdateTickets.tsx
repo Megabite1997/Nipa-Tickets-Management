@@ -1,4 +1,4 @@
-import { FC, lazy } from "react";
+import { FC, lazy, Suspense } from "react";
 
 const DataTable = lazy(() => import("../../components/DataTable"));
 
@@ -8,7 +8,9 @@ const UpdateTickets: FC = () => {
       <h1 className="text-2xl font-bold text-center">Update a Ticket</h1>
 
       <div className="mt-10 mb-64 p-2">
-        <DataTable />
+        <Suspense fallback={<div>Loading Data Table...</div>}>
+          <DataTable />
+        </Suspense>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import {
   GridColDef,
   GridSortModel,
@@ -197,32 +197,36 @@ const DataTable: React.FC = () => {
         </div>
       </div>
 
-      <DataGrid
-        rows={data}
-        columns={columns}
-        loading={loading}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
+      <Suspense fallback={<div>Loading Data Grid...</div>}>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          loading={loading}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
             },
-          },
-        }}
-        pagination
-        paginationMode="server"
-        rowCount={totalRows} // Set total rows from meta
-        pageSizeOptions={[5, 10, 20]}
-        paginationModel={{ page: query.page - 1, pageSize: query.limit }}
-        onPaginationModelChange={handlePaginationChange}
-        onSortModelChange={handleSortChange}
-      />
+          }}
+          pagination
+          paginationMode="server"
+          rowCount={totalRows} // Set total rows from meta
+          pageSizeOptions={[5, 10, 20]}
+          paginationModel={{ page: query.page - 1, pageSize: query.limit }}
+          onPaginationModelChange={handlePaginationChange}
+          onSortModelChange={handleSortChange}
+        />
+      </Suspense>
 
       {selectedRow && (
-        <EditDialog
-          selectedRow={selectedRow}
-          onClose={() => setSelectedRow(null)}
-          onSave={handleSave}
-        />
+        <Suspense fallback={<div>Loading Edit Dialog...</div>}>
+          <EditDialog
+            selectedRow={selectedRow}
+            onClose={() => setSelectedRow(null)}
+            onSave={handleSave}
+          />
+        </Suspense>
       )}
     </Box>
   );
