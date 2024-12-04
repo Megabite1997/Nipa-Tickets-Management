@@ -10,7 +10,7 @@ import UpdateTickets from "./pages/Tickets/UpdateTickets";
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
