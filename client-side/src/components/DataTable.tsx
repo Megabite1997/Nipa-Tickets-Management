@@ -210,7 +210,7 @@ const DataTable: React.FC = () => {
             },
           }}
           pagination
-          paginationMode="server"
+          paginationMode="client"
           rowCount={totalRows} // Set total rows from meta
           pageSizeOptions={[5, 10, 20]}
           paginationModel={{ page: query.page - 1, pageSize: query.limit }}

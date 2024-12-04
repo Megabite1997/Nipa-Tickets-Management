@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 
 router.post("/", createTicket);
-router.put("/:id", updateTicket);
+router.put("/:id", updateTicket); //Change to use 'patch' would be more secure.
 router.get("/", listTickets);
 
 module.exports = router;
