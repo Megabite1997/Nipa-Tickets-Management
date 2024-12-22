@@ -7,7 +7,6 @@ import ErrorPage from "./pages/Error";
 import ContactUs from "./pages/ContactUs";
 import CreateTicket from "./pages/Tickets/CreateTicket";
 import UpdateTickets from "./pages/Tickets/UpdateTickets";
-import Test from "./pages/Test";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +15,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: "/test", element: <Test /> },
       { path: "about_us", element: <AboutUsPage /> },
       { path: "contact_us", element: <ContactUs /> },
       {
